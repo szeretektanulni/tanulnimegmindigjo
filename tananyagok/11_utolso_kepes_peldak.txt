@@ -1,76 +1,32 @@
-LUKS, LOOP, PARTÍCIÓK, MOUNT
+UTOLSÓ / KÉPES PÉLDÁK
 
-1. Partíció készítése /dev/sdb-re, majd LUKS formázás
+1. Fájl tulajdonosa operator legyen
+
+Feladat:
+Állítsa át a /root/197892.txt fájl attribútumait úgy, hogy tulajdonosa az operator felhasználó legyen.
+Mást ne változtasson.
 
 Megoldás:
-fdisk /dev/sdb
-
-fdisk alatt:
-n
-Enter
-Enter
-Enter
-Enter
-w
-
-Utána:
-cryptsetup luksFormat /dev/sdb1
+chown operator /root/197892.txt
 
 ------------------------------------------------------------
 
-2. Képfájl loop device-ra és LUKS formázás
+2. 512 bites RSA privát kulcs PKCS#8 formátumban
+
+Feladat:
+Készítsen egy 512 bites RSA privát kulcsot, és mentse el PKCS#8 formátumban a következő állományba:
+/root/197893.pem
 
 Megoldás:
-losetup -f /root/34627.img
-cryptsetup luksFormat /dev/loop0
-
-Megjegyzés:
-Ha nem biztos, hogy a loop0 lett kiosztva:
-losetup -a
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out /root/197893.pem
 
 ------------------------------------------------------------
 
-3. LUKS fájlrendszer megnyitása és tartalom másolása /root-ba
+3. Felhasználó létrehozása és jelszó zárolása
+
+Feladat:
+Készítsen egy új user197894 nevű felhasználót, és zárolja a jelszavát.
 
 Megoldás:
-curl -o /319e33e0 https://progcont.hu/docs/IT-Security/loop/319e33e0
-cryptsetup luksOpen /319e33e0 encrypt1
-mkdir -p /mnt/mnt0
-mount /dev/mapper/encrypt1 /mnt/mnt0
-cp -r /mnt/mnt0/* /root/
-
-------------------------------------------------------------
-
-4. Új crypto_LUKS + XFS fájlrendszer /dev/sdc-n és mount /mnt-re
-
-Megoldás:
-cryptsetup luksFormat /dev/sdc
-cryptsetup luksOpen /dev/sdc luksdisk
-mkfs.xfs /dev/mapper/luksdisk
-mount /dev/mapper/luksdisk /mnt
-
-------------------------------------------------------------
-
-5. Partíció /dev/sdc1, ext2, read-only mount
-
-Megoldás:
-fdisk /dev/sdc
-
-fdisk alatt:
-n
-Enter
-Enter
-Enter
-Enter
-w
-
-Utána:
-mkfs.ext2 /dev/sdc1
-mount -o ro /dev/sdc1 /mnt
-
-------------------------------------------------------------
-
-6. Read-only remount
-
-Megoldás:
-mount -o remount,ro /mnt
+useradd user197894
+passwd -l user197894

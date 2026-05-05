@@ -1,76 +1,55 @@
-FELHASZNÁLÓK, CSOPORTOK, CHAGE
+FIND ÉS FÁJLMŰVELETEK
 
-1. Felhasználói account lejáratának beállítása
+1. Nem root tulajdonosú könyvtár keresése és válaszfájlba írása
 
 Megoldás:
-chage user-34465 -E 2020-05-18
+find /root/39850/ -type d -not -user root > /root/39850.ans
 
 ------------------------------------------------------------
 
-2. Utolsó jelszóváltoztatás dátuma
+2. Sticky bit-es könyvtár keresése
 
 Megoldás:
-chage -d 2020-01-01 user-34740
+find /root/13864/ -type d -perm -1000 > /root/13864.ans
 
 ------------------------------------------------------------
 
-3. Minimum és maximum jelszócsere-idő
+3. Sticky bit-es, de nem írható könyvtár keresése
 
 Megoldás:
-useradd user13947
-chage -m 10 -M 30 user13947
+find /root/18951/ -type d -perm -1000 -and -not \( -perm /222 \) > /root/18951.ans
 
 ------------------------------------------------------------
 
-4. Account lejáratának ellenőrzése és beállítása
+4. Találatok számlálása
 
 Megoldás:
-chage -l user18938
-chage -E 2020-06-29 user18938
+find /root/13864/ | wc -l
 
 ------------------------------------------------------------
 
-5. Felhasználó létrehozása
+5. Adott méretű fájl létrehozása dd-vel
 
 Megoldás:
-useradd user-34273
+dd if=/dev/zero of=/root/13895.dat bs=138950 count=1
 
 ------------------------------------------------------------
 
-6. Felhasználó létrehozása és jelszó zárolása
+6. Adott méretű fájl létrehozása fallocate-tel
 
 Megoldás:
-useradd user39821
-passwd -l user39821
+fallocate -l 396650 /root/39665.dat
 
 ------------------------------------------------------------
 
-7. Felhasználó hozzáadása csoporthoz
+7. Első 70 byte kimásolása
 
 Megoldás:
-usermod user-34425 -G group-34425
-
-Megjegyzés:
-Ha meglévő csoporttagságokat is meg kell tartani, biztonságosabb:
-usermod -aG group-34425 user-34425
+head -c 70 /root/160067.dat > /root/160067.part
 
 ------------------------------------------------------------
 
-8. UID módosítása
+8. Üres fájl létrehozása
 
 Megoldás:
-usermod user-34421 -u 1237
-
-------------------------------------------------------------
-
-9. Home könyvtár módosítása és létrehozása, ha nem létezik
-
-Megoldás:
-usermod -d /home/u34296 -m user-34296
-
-------------------------------------------------------------
-
-10. Új csoport létrehozása
-
-Megoldás:
-groupadd newgroup-34542
+touch /root/test-2.txt

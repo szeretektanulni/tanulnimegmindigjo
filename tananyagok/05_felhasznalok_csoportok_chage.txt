@@ -1,97 +1,76 @@
-JOGOSULTSÁGOK, SPECIÁLIS BITEK, ACL, CHOWN
+FELHASZNÁLÓK, CSOPORTOK, CHAGE
 
-1. Csak a tulajdonos olvashassa, sticky bit bekapcsolva
+1. Felhasználói account lejáratának beállítása
 
 Megoldás:
-chmod 1400 /root/34484.txt
+chage user-34465 -E 2020-05-18
 
 ------------------------------------------------------------
 
-2. Csak tulajdonos és csoport írhat/futtathat, setuid bekapcsolva
+2. Utolsó jelszóváltoztatás dátuma
 
 Megoldás:
-chmod 4550 /root/34759.txt
+chage -d 2020-01-01 user-34740
 
 ------------------------------------------------------------
 
-3. Fájl csak olvasható legyen mindenki számára
+3. Minimum és maximum jelszócsere-idő
 
 Megoldás:
-chmod 444 /root/13933.txt
-
-vagy:
-chmod -w /root/13933.txt
+useradd user13947
+chage -m 10 -M 30 user13947
 
 ------------------------------------------------------------
 
-4. Csak olvasható jog beállítása konkrét fájlra
+4. Account lejáratának ellenőrzése és beállítása
 
 Megoldás:
-chmod 444 /root/86237.txt
+chage -l user18938
+chage -E 2020-06-29 user18938
 
 ------------------------------------------------------------
 
-5. Új fájl/mappa alapértelmezett jogosultsága 0464 legyen
+5. Felhasználó létrehozása
 
 Megoldás:
-umask 313
+useradd user-34273
 
 ------------------------------------------------------------
 
-6. Új fájl/mappa alapértelmezett jogosultsága 0640 legyen
+6. Felhasználó létrehozása és jelszó zárolása
 
 Megoldás:
-umask 0137
+useradd user39821
+passwd -l user39821
 
 ------------------------------------------------------------
 
-7. Fájl tulajdonosának beállítása
+7. Felhasználó hozzáadása csoporthoz
 
 Megoldás:
-chown user-34289 /root/34289.txt
+usermod user-34425 -G group-34425
+
+Megjegyzés:
+Ha meglévő csoporttagságokat is meg kell tartani, biztonságosabb:
+usermod -aG group-34425 user-34425
 
 ------------------------------------------------------------
 
-8. Fájl tulajdonosának operatorra állítása
+8. UID módosítása
 
 Megoldás:
-chown operator /root/13912.txt
+usermod user-34421 -u 1237
 
 ------------------------------------------------------------
 
-9. Tulajdonos és csoport egyszerre
+9. Home könyvtár módosítása és létrehozása, ha nem létezik
 
 Megoldás:
-chown operator:users /root/160076.txt
+usermod -d /home/u34296 -m user-34296
 
 ------------------------------------------------------------
 
-10. Olvasási ACL jog operatornak, más ne változzon
+10. Új csoport létrehozása
 
 Megoldás:
-setfacl -m u:operator:r /root/13921.txt
-
-------------------------------------------------------------
-
-11. Olvasási és írási ACL jog felhasználónak
-
-Megoldás:
-setfacl -m u:user-34374:rw /root/34374.txt
-
-------------------------------------------------------------
-
-12. Default ACL mappára
-
-Feladat:
-Új almappák/fájlok örököljék a megadott jogot.
-
-Megoldás:
-mkdir /root/34341
-setfacl -d -m u:user-34341:rwx /root/34341
-
-------------------------------------------------------------
-
-13. Összes ACL bejegyzés törlése
-
-Megoldás:
-setfacl -b /root/160093.txt
+groupadd newgroup-34542
