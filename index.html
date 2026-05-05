@@ -1,32 +1,215 @@
-UTOLSÓ / KÉPES PÉLDÁK
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Security tananyagok</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
 
-1. Fájl tulajdonosa operator legyen
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
 
-Feladat:
-Állítsa át a /root/197892.txt fájl attribútumait úgy, hogy tulajdonosa az operator felhasználó legyen.
-Mást ne változtasson.
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
 
-Megoldás:
-chown operator /root/197892.txt
+    header p {
+      margin: 10px 0 0;
+      color: #dbe4ea;
+    }
 
-------------------------------------------------------------
+    .toolbar {
+      background: #eaf2f8;
+      padding: 18px;
+      border-bottom: 1px solid #d6e4ef;
+      text-align: center;
+    }
 
-2. 512 bites RSA privát kulcs PKCS#8 formátumban
+    select {
+      width: min(760px, 95%);
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #b8c7d4;
+      background: white;
+      color: #2c3e50;
+      font-weight: bold;
+    }
 
-Feladat:
-Készítsen egy 512 bites RSA privát kulcsot, és mentse el PKCS#8 formátumban a következő állományba:
-/root/197893.pem
+    main {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 20px 40px;
+    }
 
-Megoldás:
-openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out /root/197893.pem
+    .content-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+      padding: 22px;
+    }
 
-------------------------------------------------------------
+    .content-title {
+      color: #2c3e50;
+      margin-top: 0;
+      border-left: 6px solid #3498db;
+      padding-left: 12px;
+    }
 
-3. Felhasználó létrehozása és jelszó zárolása
+    pre {
+      background: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      line-height: 1.65;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 15px;
+    }
 
-Feladat:
-Készítsen egy új user197894 nevű felhasználót, és zárolja a jelszavát.
+    .hint {
+      background: #eef6ff;
+      border-left: 4px solid #3498db;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
 
-Megoldás:
-useradd user197894
-passwd -l user197894
+    .buttons {
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      background: #3498db;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #2878ad;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>IT Security tananyagok</h1>
+  <p>Válassz tananyagot a legördülő listából, és a TXT tartalom itt jelenik meg.</p>
+</header>
+
+<div class="toolbar">
+  <select id="valaszto" onchange="betolt(this.value)">
+    <option value="">Válassz tananyagot...</option>
+    <option value="tananyag/01_sudo_alapok.txt">01 sudo alapok</option>
+    <option value="tananyag/02_vegyes_vizsgafeladatok_160xxx.txt">02 vegyes vizsgafeladatok 160xxx</option>
+    <option value="tananyag/03_vizsgafeladatok_862xx_863xx.txt">03 vizsgafeladatok 862xx 863xx</option>
+    <option value="tananyag/04_jogosultsagok_acl_chown.txt">04 jogosultsagok acl chown</option>
+    <option value="tananyag/05_felhasznalok_csoportok_chage.txt">05 felhasznalok csoportok chage</option>
+    <option value="tananyag/06_find_es_fajlmuveletek.txt">06 find es fajlmuveletek</option>
+    <option value="tananyag/07_openssl_szimmetrikus.txt">07 openssl szimmetrikus</option>
+    <option value="tananyag/08_openssl_rsa.txt">08 openssl rsa</option>
+    <option value="tananyag/09_ssh_belepes_kulccsal.txt">09 ssh belepes kulccsal</option>
+    <option value="tananyag/10_luks_loop_particiok_mount.txt">10 luks loop particiok mount</option>
+    <option value="tananyag/11_utolso_kepes_peldak.txt">11 utolso kepes peldak</option>
+  </select>
+
+  <div class="buttons">
+    <button onclick="elozo()">Előző</button>
+    <button onclick="kovetkezo()">Következő</button>
+  </div>
+</div>
+
+<main>
+  <div class="content-card">
+    <h2 id="cim" class="content-title">Válassz tananyagot</h2>
+    <div class="hint">
+      A tananyagok a <b>tananyag</b> mappából töltődnek be.
+    </div>
+    <pre id="tartalom">Itt fog megjelenni a kiválasztott tananyag.</pre>
+  </div>
+</main>
+
+<footer>
+  IT Security tananyagok
+</footer>
+
+<script>
+const select = document.getElementById("valaszto");
+const cim = document.getElementById("cim");
+const tartalom = document.getElementById("tartalom");
+
+function szepCim(filepath) {
+  const fajl = filepath.split("/").pop().replace(".txt", "");
+  return fajl.replaceAll("_", " ");
+}
+
+function betolt(fajl) {
+  if (!fajl) {
+    cim.textContent = "Válassz tananyagot";
+    tartalom.textContent = "Itt fog megjelenni a kiválasztott tananyag.";
+    return;
+  }
+
+  fetch(fajl)
+    .then(v => {
+      if (!v.ok) throw new Error("Nem sikerült betölteni a fájlt.");
+      return v.text();
+    })
+    .then(t => {
+      cim.textContent = szepCim(fajl);
+      tartalom.textContent = t;
+    })
+    .catch(() => {
+      cim.textContent = "Hiba";
+      tartalom.textContent = "Nem sikerült betölteni a TXT fájlt. Ellenőrizd, hogy a tananyag mappa és a fájlnevek jól vannak-e feltöltve.";
+    });
+}
+
+function elozo() {
+  if (select.selectedIndex > 1) {
+    select.selectedIndex--;
+    betolt(select.value);
+  }
+}
+
+function kovetkezo() {
+  if (select.selectedIndex < select.options.length - 1) {
+    select.selectedIndex++;
+    betolt(select.value);
+  }
+}
+
+window.onload = () => {
+  select.selectedIndex = 1;
+  betolt(select.value);
+};
+</script>
+
+</body>
+</html>
