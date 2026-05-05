@@ -1,0 +1,20 @@
+SUDO ALAPOK
+
+Ha nincs jogosultságod, sudo-t kell használni.
+
+Alap használat:
+sudo parancs
+
+Példák:
+sudo useradd user86315
+sudo chown operator /root/file.txt
+sudo mount /dev/sdc1 /mnt
+
+Root shell kérése:
+sudo -i
+
+vagy:
+sudo su
+
+Megjegyzés:
+Ha sudo -i vagy sudo su után root shellben vagy, nem kell minden parancs elé külön sudo.

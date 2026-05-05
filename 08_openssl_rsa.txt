@@ -1,0 +1,41 @@
+OPENSSL – SZIMMETRIKUS TITKOSÍTÁS / VISSZAFEJTÉS
+
+1. AES-128-CBC visszafejtés kulccsal és 0 IV-vel
+
+Megoldás:
+openssl aes-128-cbc -d -K 13967 -iv 0 -in /root/13967.enc -out /root/13967.txt
+
+------------------------------------------------------------
+
+2. AES-128-CBC visszafejtés másik példával
+
+Megoldás:
+openssl aes-128-cbc -d -K 39728 -iv 0 -in /root/39728.enc > /root/39728.txt
+
+------------------------------------------------------------
+
+3. DES-EDE visszafejtés jelszóval
+
+Megoldás:
+openssl des-ede -d -k 13954 -in /root/13954.enc -out /root/13954.txt
+
+------------------------------------------------------------
+
+4. DES-CBC titkosítás jelszóval
+
+Megoldás:
+openssl des-cbc -k it34306 -in /root/34306.txt -out /root/34306.enc
+
+------------------------------------------------------------
+
+5. DES-EDE-CBC visszafejtés 0 kulccsal és 0 IV-vel
+
+Megoldás:
+openssl des-ede-cbc -d -in /root/test-4.enc -K 0 -iv 0 -out /root/test-4.txt
+
+------------------------------------------------------------
+
+Megjegyzés:
+-K = hexadecimális kulcs
+-k = jelszó
+-d = decode / visszafejtés

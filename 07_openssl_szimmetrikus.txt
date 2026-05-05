@@ -1,0 +1,55 @@
+FIND ÉS FÁJLMŰVELETEK
+
+1. Nem root tulajdonosú könyvtár keresése és válaszfájlba írása
+
+Megoldás:
+find /root/39850/ -type d -not -user root > /root/39850.ans
+
+------------------------------------------------------------
+
+2. Sticky bit-es könyvtár keresése
+
+Megoldás:
+find /root/13864/ -type d -perm -1000 > /root/13864.ans
+
+------------------------------------------------------------
+
+3. Sticky bit-es, de nem írható könyvtár keresése
+
+Megoldás:
+find /root/18951/ -type d -perm -1000 -and -not \( -perm /222 \) > /root/18951.ans
+
+------------------------------------------------------------
+
+4. Találatok számlálása
+
+Megoldás:
+find /root/13864/ | wc -l
+
+------------------------------------------------------------
+
+5. Adott méretű fájl létrehozása dd-vel
+
+Megoldás:
+dd if=/dev/zero of=/root/13895.dat bs=138950 count=1
+
+------------------------------------------------------------
+
+6. Adott méretű fájl létrehozása fallocate-tel
+
+Megoldás:
+fallocate -l 396650 /root/39665.dat
+
+------------------------------------------------------------
+
+7. Első 70 byte kimásolása
+
+Megoldás:
+head -c 70 /root/160067.dat > /root/160067.part
+
+------------------------------------------------------------
+
+8. Üres fájl létrehozása
+
+Megoldás:
+touch /root/test-2.txt

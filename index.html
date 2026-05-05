@@ -1,0 +1,32 @@
+UTOLSÓ / KÉPES PÉLDÁK
+
+1. Fájl tulajdonosa operator legyen
+
+Feladat:
+Állítsa át a /root/197892.txt fájl attribútumait úgy, hogy tulajdonosa az operator felhasználó legyen.
+Mást ne változtasson.
+
+Megoldás:
+chown operator /root/197892.txt
+
+------------------------------------------------------------
+
+2. 512 bites RSA privát kulcs PKCS#8 formátumban
+
+Feladat:
+Készítsen egy 512 bites RSA privát kulcsot, és mentse el PKCS#8 formátumban a következő állományba:
+/root/197893.pem
+
+Megoldás:
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out /root/197893.pem
+
+------------------------------------------------------------
+
+3. Felhasználó létrehozása és jelszó zárolása
+
+Feladat:
+Készítsen egy új user197894 nevű felhasználót, és zárolja a jelszavát.
+
+Megoldás:
+useradd user197894
+passwd -l user197894

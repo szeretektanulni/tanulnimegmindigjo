@@ -1,0 +1,97 @@
+JOGOSULTSÁGOK, SPECIÁLIS BITEK, ACL, CHOWN
+
+1. Csak a tulajdonos olvashassa, sticky bit bekapcsolva
+
+Megoldás:
+chmod 1400 /root/34484.txt
+
+------------------------------------------------------------
+
+2. Csak tulajdonos és csoport írhat/futtathat, setuid bekapcsolva
+
+Megoldás:
+chmod 4550 /root/34759.txt
+
+------------------------------------------------------------
+
+3. Fájl csak olvasható legyen mindenki számára
+
+Megoldás:
+chmod 444 /root/13933.txt
+
+vagy:
+chmod -w /root/13933.txt
+
+------------------------------------------------------------
+
+4. Csak olvasható jog beállítása konkrét fájlra
+
+Megoldás:
+chmod 444 /root/86237.txt
+
+------------------------------------------------------------
+
+5. Új fájl/mappa alapértelmezett jogosultsága 0464 legyen
+
+Megoldás:
+umask 313
+
+------------------------------------------------------------
+
+6. Új fájl/mappa alapértelmezett jogosultsága 0640 legyen
+
+Megoldás:
+umask 0137
+
+------------------------------------------------------------
+
+7. Fájl tulajdonosának beállítása
+
+Megoldás:
+chown user-34289 /root/34289.txt
+
+------------------------------------------------------------
+
+8. Fájl tulajdonosának operatorra állítása
+
+Megoldás:
+chown operator /root/13912.txt
+
+------------------------------------------------------------
+
+9. Tulajdonos és csoport egyszerre
+
+Megoldás:
+chown operator:users /root/160076.txt
+
+------------------------------------------------------------
+
+10. Olvasási ACL jog operatornak, más ne változzon
+
+Megoldás:
+setfacl -m u:operator:r /root/13921.txt
+
+------------------------------------------------------------
+
+11. Olvasási és írási ACL jog felhasználónak
+
+Megoldás:
+setfacl -m u:user-34374:rw /root/34374.txt
+
+------------------------------------------------------------
+
+12. Default ACL mappára
+
+Feladat:
+Új almappák/fájlok örököljék a megadott jogot.
+
+Megoldás:
+mkdir /root/34341
+setfacl -d -m u:user-34341:rwx /root/34341
+
+------------------------------------------------------------
+
+13. Összes ACL bejegyzés törlése
+
+Megoldás:
+setfacl -b /root/160093.txt

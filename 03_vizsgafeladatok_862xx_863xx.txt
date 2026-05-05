@@ -1,0 +1,185 @@
+VEGYES VIZSGAFELADATOK – 160xxx
+
+1. Felhasználó létrehozása és SSH RSA kulcs
+
+Feladat:
+Hozd létre a user160184 nevű felhasználót, és generálj számára egy új alapértelmezett SSH RSA kulcsot:
+/home/user160184/.ssh/id_rsa
+
+A kulcs jelszó (passphrase) nélkül készüljön.
+Engedélyezd, hogy a user160184 felhasználó rootként be tudjon jelentkezni az RSA privát kulcs segítségével.
+
+Megoldás:
+useradd user160184
+su user160184
+ssh-keygen
+ssh-copy-id root@localhost
+exit
+
+Megjegyzés:
+ssh-keygen → Enter, Enter, Enter
+ssh-copy-id → root jelszót kell megadni egyszer.
+Ha student felhasználóval dolgozol, kellhet sudo.
+
+------------------------------------------------------------
+
+2. Sticky bit-es könyvtár keresése
+
+Feladat:
+Keresd meg a /root/160171/ könyvtárban azt a könyvtárat, amelyen a sticky bit be van állítva.
+Írd ki a fájlba a teljes abszolút elérési utat:
+/root/160171.ans
+
+Megoldás:
+find /root/160171/ -type d -perm /1000 > /root/160171.ans
+
+Példa találat:
+/root/160171/5/4/1
+
+Megjegyzés:
+A /root/160171/5/4/1 egy eredmény, nem parancs.
+
+------------------------------------------------------------
+
+3. Operator jelszólejárat beállítása
+
+Feladat:
+Állítsd be az operator felhasználónál:
+- maximális jelszóhasználati idő: 100 nap
+- utolsó jelszóváltoztatás dátuma: 2021-04-15
+
+Megoldás:
+chage operator -M 100
+chage operator -d 2021-04-15
+
+------------------------------------------------------------
+
+4. RSA aláírás ellenőrzése
+
+Feladat:
+Ki írta alá a /root/contract-160147.txt fájlt?
+Lehetséges aláírók: Anne, Bob, Carol, Daniel vagy Eve.
+Az aláírás SHA-256 hash algoritmussal készült, és ebben a fájlban található:
+/root/contract-160147.sha256.signature
+
+Publikus kulcsok:
+Anne: /root/Anne-160147.pub.pem
+Bob: /root/Bob-160147.pub.pem
+Carol: /root/Carol-160147.pub.pem
+Daniel: /root/Daniel-160147.pub.pem
+Eve: /root/Eve-160147.pub.pem
+
+A helyes nevet írd ebbe a fájlba:
+/root/160147.ans
+
+Megoldás:
+openssl dgst -sha256 -verify /root/Anne-160147.pub.pem -signature /root/contract-160147.sha256.signature /root/contract-160147.txt
+openssl dgst -sha256 -verify /root/Bob-160147.pub.pem -signature /root/contract-160147.sha256.signature /root/contract-160147.txt
+openssl dgst -sha256 -verify /root/Carol-160147.pub.pem -signature /root/contract-160147.sha256.signature /root/contract-160147.txt
+openssl dgst -sha256 -verify /root/Daniel-160147.pub.pem -signature /root/contract-160147.sha256.signature /root/contract-160147.txt
+openssl dgst -sha256 -verify /root/Eve-160147.pub.pem -signature /root/contract-160147.sha256.signature /root/contract-160147.txt
+
+Amelyiknél ez jelenik meg:
+Verified OK
+
+annak a nevét kell beírni:
+echo "NÉV" > /root/160147.ans
+
+Példa:
+echo "Bob" > /root/160147.ans
+
+------------------------------------------------------------
+
+5. LUKS fájlrendszer letöltése és másolása
+
+Feladat:
+Töltsd le az e3fae9a2 nevű fájlt.
+A fájl egy LUKS formátumú titkosított fájlrendszert tartalmaz.
+A jelszó: e3fae9a2.
+Másold ki a fájlrendszer tartalmát a /root könyvtárba.
+
+Megoldás:
+curl -o /e3fae9a2 https://progcont.hu/docs/IT-Security/loop/e3fae9a2
+cryptsetup luksOpen /e3fae9a2 luksdisk
+mkdir -p /mnt/luks
+mount /dev/mapper/luksdisk /mnt/luks
+cp -r /mnt/luks/* /root/
+
+Opcionális lezárás:
+umount /mnt/luks
+cryptsetup luksClose luksdisk
+
+------------------------------------------------------------
+
+6. Jogosultság beállítása: -r---rws--T
+
+Feladat:
+Állítsd be a /root/160101.txt fájl jogosultságait úgy, hogy a könyvtárlistában így jelenjen meg:
+-r---rws--T
+
+Megoldás:
+chmod 2644 /root/160101.txt
+chmod g+s /root/160101.txt
+chmod +t /root/160101.txt
+chmod o-x /root/160101.txt
+
+------------------------------------------------------------
+
+7. ACL bejegyzések törlése
+
+Feladat:
+Töröld a /root/160093.txt fájl összes ACL bejegyzését.
+
+Megoldás:
+setfacl -b /root/160093.txt
+
+------------------------------------------------------------
+
+8. Tulajdonos és csoport beállítása
+
+Feladat:
+Állítsd be a /root/160076.txt fájl tulajdonjogát úgy, hogy:
+- tulajdonos: operator
+- tulajdonosi csoport: users
+
+A fájlon semmi mást ne változtass meg.
+
+Megoldás:
+chown operator:users /root/160076.txt
+
+------------------------------------------------------------
+
+9. Első 70 byte kimásolása
+
+Feladat:
+Másold ki a /root/160067.dat fájl első 70 byte-ját ebbe a fájlba:
+/root/160067.part
+
+Megoldás:
+head -c 70 /root/160067.dat > /root/160067.part
+
+------------------------------------------------------------
+
+10. 1024 bites RSA kulcs PKCS#8 formátumban
+
+Feladat:
+Generálj egy 1024 bites RSA kulcsot, és mentsd el /root/160060.pem néven PKCS#8 privát kulcsként.
+
+Megoldás:
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:1024 -out /root/160060.pem
+
+------------------------------------------------------------
+
+11. Új crypto_LUKS titkosított XFS fájlrendszer
+
+Feladat:
+Hozz létre egy új crypto_LUKS titkosított XFS fájlrendszert a /dev/sdc eszközön, és csatold fel a /mnt könyvtárba.
+
+Megoldás:
+cryptsetup luksFormat /dev/sdc
+cryptsetup luksOpen /dev/sdc luksdisk
+mkfs.xfs /dev/mapper/luksdisk
+mount /dev/mapper/luksdisk /mnt
+
+Figyelem:
+A luksFormat törli az eszköz tartalmát.

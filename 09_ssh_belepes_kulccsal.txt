@@ -1,0 +1,81 @@
+OPENSSL – RSA KULCSOK, ALÁÍRÁS, TITKOSÍTÁS
+
+1. 1024 bites RSA kulcs PKCS#8 privát kulcsként
+
+Megoldás:
+openssl genpkey -algorithm RSA -out /root/13884.pem -pkeyopt rsa_keygen_bits:1024
+
+------------------------------------------------------------
+
+2. RSA privát-publikus kulcspár létrehozása
+
+Megoldás:
+openssl genpkey -algorithm RSA -out /root/34668.pem
+openssl rsa -in /root/34668.pem -pubout > /root/34668.pub
+
+------------------------------------------------------------
+
+3. Fájl titkosítása publikus kulccsal
+
+Megoldás:
+openssl rsautl -encrypt -pubin -inkey /root/34668.pub -in /root/34668.txt -out /root/34668.enc
+
+Megjegyzés:
+Újabb OpenSSL verziókban az rsautl helyett pkeyutl használata ajánlott, de vizsgafeladatokban gyakran az rsautl szerepel.
+
+------------------------------------------------------------
+
+4. RSA titkosítás ellenőrzése / visszafejtése privát kulccsal
+
+Megoldás:
+openssl rsautl -decrypt -inkey /root/34668.pem -in /root/34668.enc
+
+------------------------------------------------------------
+
+5. Fájl aláírása SHA-256-tal privát kulccsal
+
+Megoldás:
+openssl dgst -sha256 -sign /root/34328.pem -out /root/34328.sign /root/34328.txt
+
+------------------------------------------------------------
+
+6. Aláírás ellenőrzése publikus kulccsal
+
+Megoldás:
+openssl dgst -sha256 -verify /root/34328.pub -signature /root/34328.sign /root/34328.txt
+
+------------------------------------------------------------
+
+7. Aláíró személy keresése több publikus kulcs között
+
+Megoldás:
+openssl dgst -sha256 -verify /root/Anne-39796.pub.pem -signature /root/contract-39796.sha256.signature /root/contract-39796.txt
+openssl dgst -sha256 -verify /root/Bob-39796.pub.pem -signature /root/contract-39796.sha256.signature /root/contract-39796.txt
+
+Amelyiknél Verified OK, azt a nevet kell beírni:
+echo "NÉV" > /root/39796.ans
+
+------------------------------------------------------------
+
+8. SSH publikus kulcs átalakítása OpenSSL PKCS#8 formára
+
+Megoldás:
+ssh-keygen -f /root/18811.key.pub -e -m pkcs8 > /root/18811.pkcs8
+openssl rsautl -encrypt -pubin -inkey /root/18811.pkcs8 -in /root/18811.txt -out /root/18811.enc
+
+------------------------------------------------------------
+
+9. Jelszóval védett privát kulcsból RSA PUBLIC KEY előállítása
+
+Megoldás:
+openssl rsa -in /root/51386.private.enc.pem -passin pass:660ca4 -RSAPublicKey_out -out /root/51386.public.pem
+
+------------------------------------------------------------
+
+10. 512 bites RSA privát kulcs PKCS#8 formátumban
+
+Feladat:
+Készíts egy 512 bites RSA privát kulcsot, és mentsd el /root/197893.pem néven.
+
+Megoldás:
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:512 -out /root/197893.pem

@@ -1,0 +1,32 @@
+SSH BELÉPÉS KULCCSAL
+
+1. Root be tudjon lépni egy user nevében jelszó nélkül
+
+Megoldás:
+ssh-keygen
+ssh-copy-id user-34345@localhost
+
+------------------------------------------------------------
+
+2. Ha kézzel kell authorized_keys-be tenni
+
+Megoldás:
+ssh-keygen -y -f privkey > pubkey
+mkdir -p /home/user/.ssh
+cat pubkey >> /home/user/.ssh/authorized_keys
+chmod 700 /home/user/.ssh
+chmod 600 /home/user/.ssh/authorized_keys
+chown -R user:user /home/user/.ssh
+
+------------------------------------------------------------
+
+3. Adott privát kulcs tulajdonosa be tudjon lépni rootként
+
+Megoldás:
+cat > /tmp/key.pem
+# ide bemásolod a privát kulcsot
+ssh-keygen -y -f /tmp/key.pem > /tmp/key.pub
+mkdir -p /root/.ssh
+cat /tmp/key.pub >> /root/.ssh/authorized_keys
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/authorized_keys

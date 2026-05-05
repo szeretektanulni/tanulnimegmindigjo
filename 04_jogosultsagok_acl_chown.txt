@@ -1,0 +1,181 @@
+VIZSGAFELADATOK – 862xx / 863xx
+
+1. DES-EDE-CBC visszafejtés
+
+Feladat:
+Fejtsd vissza a /root/test-4.enc fájlt, és mentsd az eredményt /root/test-4.txt néven.
+A titkosítás DES-EDE-CBC algoritmussal készült.
+A kulcs és az inicializációs vektor értéke 0.
+
+Megoldás:
+openssl des-ede-cbc -d -in /root/test-4.enc -K 0 -iv 0 -out /root/test-4.txt
+
+------------------------------------------------------------
+
+2. Üres fájl létrehozása
+
+Feladat:
+Hozz létre egy új üres fájlt /root/test-2.txt néven.
+
+Megoldás:
+touch /root/test-2.txt
+
+------------------------------------------------------------
+
+3. Nem root tulajdonosú könyvtár keresése
+
+Feladat:
+Keresd meg a /root/86344/ könyvtárban azt a könyvtárat, amelynek tulajdonosa nem a root felhasználó.
+Írd a teljes abszolút elérési utat a /root/86344.ans fájlba.
+
+Megoldás:
+find /root/86344/ -type d -not -user root > /root/86344.ans
+
+------------------------------------------------------------
+
+4. Felhasználó létrehozása és jelszó zárolása
+
+Feladat:
+Hozz létre egy új felhasználót user86315 néven, és zárold a felhasználó jelszavát.
+
+Megoldás:
+useradd user86315
+passwd -l user86315
+
+------------------------------------------------------------
+
+5. Aláírás ellenőrzése
+
+Feladat:
+Ki írta alá a /root/contract-86302.txt fájlt: Anne, Bob, Carol, Daniel vagy Eve?
+Az aláírás SHA-256 hash algoritmussal készült.
+A nevet írd a /root/86302.ans fájlba.
+
+Megoldás:
+echo "Carol" > /root/86302.ans
+
+------------------------------------------------------------
+
+6. LUKS fájlrendszer tartalmának másolása
+
+Feladat:
+Töltsd le az 5d3a0e1b fájlt.
+A fájl LUKS formátumú titkosított fájlrendszert tartalmaz.
+A jelszó: 5d3a0e1b.
+Másold a fájlrendszer tartalmát a /root könyvtárba.
+
+Megoldás:
+curl -o /5d3a0e1b https://progcont.hu/docs/IT-Security/loop/5d3a0e1b
+cryptsetup luksOpen /5d3a0e1b loop
+mount /dev/mapper/loop /mnt
+cp -r /mnt/* /root/
+
+------------------------------------------------------------
+
+7. AES-128-CBC visszafejtés
+
+Feladat:
+Fejtsd vissza a /root/86261.enc fájlt a 86261 kulccsal és 0 inicializációs vektorral.
+AES-128-CBC algoritmussal készült.
+Az eredményt mentsd /root/86261.txt néven.
+
+Megoldás:
+openssl aes-128-cbc -d -in /root/86261.enc -K 86261 -iv 0 -out /root/86261.txt
+
+------------------------------------------------------------
+
+8. DES-EDE visszafejtés
+
+Feladat:
+Fejtsd vissza a /root/86257.enc fájlt a 86257 jelszóval, DES-EDE algoritmussal.
+Az eredményt mentsd /root/86257.txt néven.
+
+Megoldás:
+openssl des-ede -d -in /root/86257.enc -k 86257 > /root/86257.txt
+
+------------------------------------------------------------
+
+9. RSA aláírás készítése SHA-256-tal
+
+Feladat:
+Írd alá a /root/86247.txt fájlt a megadott privát kulccsal, SHA-256 hash függvénnyel.
+Az aláírást mentsd /root/86247.sign néven.
+
+Megoldás:
+openssl dgst -sha256 -sign private_key.pem -out /root/86247.sign /root/86247.txt
+
+Megjegyzés:
+A private_key.pem helyére azt a fájlt kell írni, ahová a feladatban látható privát kulcsot elmented.
+
+------------------------------------------------------------
+
+10. Fájl csak olvashatóra állítása
+
+Feladat:
+Állítsd be a /root/86237.txt fájl jogosultságait csak olvashatóra.
+
+Megoldás:
+chmod 444 /root/86237.txt
+
+------------------------------------------------------------
+
+11. ACL jogosultság operator felhasználónak
+
+Feladat:
+Adj olvasási jogosultságot az operator felhasználónak a /root/86224.txt fájlra egy új USER ACL bejegyzéssel.
+Semmi mást ne változtass a fájlon.
+
+Megoldás:
+setfacl -m u:operator:r /root/86224.txt
+
+------------------------------------------------------------
+
+12. Tulajdonos beállítása
+
+Feladat:
+Állítsd be a /root/86211.txt fájl tulajdonosát az operator felhasználóra.
+Semmi mást ne változtass.
+
+Megoldás:
+chown operator /root/86211.txt
+
+------------------------------------------------------------
+
+13. Adott méretű fájl létrehozása
+
+Feladat:
+Hozz létre egy /root/86198.dat nevű fájlt, amelynek mérete 861980 byte.
+
+Megoldás:
+dd if=/dev/zero of=/root/86198.dat bs=861980 count=1
+
+------------------------------------------------------------
+
+14. 1024 bites RSA kulcs PKCS#8 formátumban
+
+Feladat:
+Generálj egy 1024 bites RSA kulcsot, és mentsd /root/86191.pem néven PKCS#8 privát kulcsként.
+
+Megoldás:
+openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:1024 -out /root/86191.pem
+
+------------------------------------------------------------
+
+15. Partíció létrehozása, ext2, read-only mount
+
+Feladat:
+Hozz létre egy új /dev/sdc1 partíciót a /dev/sdc meghajtón.
+Formázd ext2 fájlrendszerrel, és csatold a /mnt könyvtárba csak olvasható módban.
+
+Megoldás:
+fdisk /dev/sdc
+mkfs.ext2 /dev/sdc1
+mount -o ro /dev/sdc1 /mnt
+
+fdisk alatt általában:
+n
+Enter
+Enter
+Enter
+Enter
+w

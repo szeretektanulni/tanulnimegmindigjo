@@ -1,0 +1,76 @@
+FELHASZNÁLÓK, CSOPORTOK, CHAGE
+
+1. Felhasználói account lejáratának beállítása
+
+Megoldás:
+chage user-34465 -E 2020-05-18
+
+------------------------------------------------------------
+
+2. Utolsó jelszóváltoztatás dátuma
+
+Megoldás:
+chage -d 2020-01-01 user-34740
+
+------------------------------------------------------------
+
+3. Minimum és maximum jelszócsere-idő
+
+Megoldás:
+useradd user13947
+chage -m 10 -M 30 user13947
+
+------------------------------------------------------------
+
+4. Account lejáratának ellenőrzése és beállítása
+
+Megoldás:
+chage -l user18938
+chage -E 2020-06-29 user18938
+
+------------------------------------------------------------
+
+5. Felhasználó létrehozása
+
+Megoldás:
+useradd user-34273
+
+------------------------------------------------------------
+
+6. Felhasználó létrehozása és jelszó zárolása
+
+Megoldás:
+useradd user39821
+passwd -l user39821
+
+------------------------------------------------------------
+
+7. Felhasználó hozzáadása csoporthoz
+
+Megoldás:
+usermod user-34425 -G group-34425
+
+Megjegyzés:
+Ha meglévő csoporttagságokat is meg kell tartani, biztonságosabb:
+usermod -aG group-34425 user-34425
+
+------------------------------------------------------------
+
+8. UID módosítása
+
+Megoldás:
+usermod user-34421 -u 1237
+
+------------------------------------------------------------
+
+9. Home könyvtár módosítása és létrehozása, ha nem létezik
+
+Megoldás:
+usermod -d /home/u34296 -m user-34296
+
+------------------------------------------------------------
+
+10. Új csoport létrehozása
+
+Megoldás:
+groupadd newgroup-34542
